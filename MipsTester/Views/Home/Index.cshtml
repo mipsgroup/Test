@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using System.Data;
+@model  FileUpload
+
+<div class="text-center">
+    <form asp-controller="Home" asp-action="Index"  method="post" enctype="multipart/form-data">
+        <dl>
+            <dt>
+                <label asp-for="@Model.FormFiles">
+                    Upload Your File
+                </label>
+            </dt>
+            <dd>
+                <input asp-for="@Model.FormFiles" type="file" multiple />
+            </dd>
+        </dl>
+
+        <button type="submit" class="btn btn-primary">Submit File</button>
+
+        <table id="">
+
+            @if (ViewBag.Data != null)
+            {
+                <thead>
+
+                    @foreach (DataColumn column in (ViewBag.Data as System.Data.DataTable).Columns)
+                    {
+                    <th>@column.ColumnName.ToUpper()</th>
+
+
+
+
+
+                }
+                    </thead>
+                    if ((ViewBag.Data as System.Data.DataTable).Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in (ViewBag.Data as System.Data.DataTable).Rows)
+                        {
+
+                            <tr>
+
+                                @foreach (DataColumn column in (ViewBag.Data as System.Data.DataTable).Columns)
+                                {
+                                    <td data-title='@column.ColumnName'>
+
+                                        @dr[column].ToString()
+                                    </td>
+
+                                }
+
+
+
+
+                            </tr>
+
+
+
+                        }
+
+                    }
+                    else
+                    {
+                        int count = (ViewBag.Data as System.Data.DataTable).Columns.Count;
+                        <tr>
+
+                            <td colspan='@count' style="color:red;">
+
+                                No Data Found.
+                            </td>
+
+
+
+                        </tr>
+
+
+
+                    }
+
+                }
+                else
+                {
+                    if (ViewBag.Error != null)
+                    {
+                        <tr>
+                            <td style="color:red;">
+
+                                @(ViewBag.Error != null ? ViewBag.Error.ToString() : "")
+                            </td>
+
+
+
+                        </tr>
+
+                    }
+                }
+        </table>
+    </form>
+</div>
